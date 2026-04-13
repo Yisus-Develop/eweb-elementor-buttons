@@ -1,5 +1,5 @@
 /* ==========================================================================
-   EWEB Project Button (Smooth Rotation Style)
+   EWEB Project Button (Robust Wrapper Style)
    ========================================================================== */
 .eweb-project-button {
   display: inline-flex;
@@ -38,13 +38,10 @@
   flex-shrink: 0;
 }
 
-/* Base de iconos: Centrados y con transición de rotación */
-.eweb-project-button .icon-circle i,
-.eweb-project-button .icon-circle svg {
+/* Envoltorio de Iconos: Asegura el centrado y la rotación */
+.eweb-project-button .icon-wrapper {
   position: absolute;
-  width: 22px;
-  height: 22px;
-  font-size: 22px;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,25 +49,33 @@
   transform-origin: center;
 }
 
-/* Estado Normal: El icono recto está visible y en 0 grados */
+/* Forzar que el icono interno (i o svg) herede el tamaño */
+.eweb-project-button .icon-wrapper i,
+.eweb-project-button .icon-wrapper svg {
+  display: block !important;
+  width: 1em;
+  height: 1em;
+  font-size: inherit;
+  fill: currentColor;
+}
+
+/* Estado Normal: Recto visible, Diagonal oculto */
 .eweb-project-button .icon-straight {
   opacity: 1;
   transform: rotate(0deg);
 }
 
-/* Estado Normal: El icono diagonal está oculto y rotado -180 grados */
 .eweb-project-button .icon-diagonal {
   opacity: 0;
   transform: rotate(-180deg);
 }
 
-/* Estado Hover: El recto gira y desaparece */
+/* Estado Hover: El recto gira fuera, el diagonal entra girando */
 .eweb-project-button:hover .icon-straight {
   opacity: 0;
   transform: rotate(180deg);
 }
 
-/* Estado Hover: El diagonal gira hacia su posición original y aparece */
 .eweb-project-button:hover .icon-diagonal {
   opacity: 1;
   transform: rotate(0deg);

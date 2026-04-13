@@ -3,7 +3,7 @@
  * Project Button Widget
  *
  * @package EEB
- * @version 1.3.0
+ * @version 1.3.3
  */
 
 use Elementor\Widget_Base;
@@ -316,13 +316,12 @@ class EEB_Project_Button_Widget extends Widget_Base {
 		<a <?php echo $this->get_render_attribute_string( 'button' ); ?>>
 			<span class="btn-text"><?php echo esc_html( $settings['button_text'] ); ?></span>
 			<span class="icon-circle" aria-hidden="true">
-				<?php 
-				$settings['icon_normal']['value'] .= ' icon-straight';
-				Icons_Manager::render_icon( $settings['icon_normal'], [ 'aria-hidden' => 'true' ] ); 
-				
-				$settings['icon_hover']['value'] .= ' icon-diagonal';
-				Icons_Manager::render_icon( $settings['icon_hover'], [ 'aria-hidden' => 'true' ] ); 
-				?>
+				<span class="icon-wrapper icon-straight">
+					<?php Icons_Manager::render_icon( $settings['icon_normal'], [ 'aria-hidden' => 'true' ] ); ?>
+				</span>
+				<span class="icon-wrapper icon-diagonal">
+					<?php Icons_Manager::render_icon( $settings['icon_hover'], [ 'aria-hidden' => 'true' ] ); ?>
+				</span>
 			</span>
 		</a>
 		<?php
