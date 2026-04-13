@@ -1,0 +1,33 @@
+name: EWEB Elite CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Validate composer.json and build.prop
+      run: |
+        if [ -f composer.json ]; then composer validate --strict; fi
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+
+    - name: Check PHP Syntax (Lint)
+      run: |
+        find . -name "*.php" -not -path "./vendor/*" | xargs -n 1 -P 4 php -l
+
+    - name: Verify Elite Structure
+      run: |
+        test -f eweb-elementor-buttons.php
+        test -d src/Widgets
+        test -d assets
