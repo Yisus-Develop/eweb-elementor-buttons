@@ -3,7 +3,7 @@
  * Project Button Widget
  *
  * @package EEB
- * @version 1.3.8
+ * @version 1.4.1
  */
 
 use Elementor\Widget_Base;
@@ -305,7 +305,14 @@ class EEB_Project_Button_Widget extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 		$this->add_render_attribute( 'button', 'class', 'eweb-project-button' );
 
-		// El ángulo inicial del icono diagonal debe ser el ángulo normal para que gire HACIA el de hover.
+		// Soporte nativo para Popups y Enlaces Dinámicos.
+		if ( ! empty( $settings['button_link']['url'] ) ) {
+			$this->add_link_attributes( 'button', $settings['button_link'] );
+		} else {
+			$this->add_render_attribute( 'button', 'href', '#' );
+		}
+
+		// Ángulo inicial del icono diagonal.
 		$start_angle = $settings['angle_normal']['size'] ?? 0;
 		?>
 		<style>

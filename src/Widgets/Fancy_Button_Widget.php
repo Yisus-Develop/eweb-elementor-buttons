@@ -3,7 +3,7 @@
  * Fancy Button Widget
  *
  * @package EEB
- * @version 1.3.0
+ * @version 1.4.1
  */
 
 use Elementor\Widget_Base;
@@ -54,8 +54,7 @@ class EEB_Fancy_Button_Widget extends Widget_Base {
 			[
 				'label'       => esc_html__( 'Button Text', 'eweb-buttons' ),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => esc_html__( 'Get started', 'eweb-buttons' ),
-				'placeholder' => esc_html__( 'Escribe el texto…', 'eweb-buttons' ),
+				'default'     => esc_html__( 'Button', 'eweb-buttons' ),
 				'dynamic'     => [ 'active' => true ],
 			]
 		);
@@ -72,7 +71,7 @@ class EEB_Fancy_Button_Widget extends Widget_Base {
 		);
 
 		$this->add_control(
-			'icon',
+			'button_icon',
 			[
 				'label'   => esc_html__( 'Icon', 'eweb-buttons' ),
 				'type'    => Controls_Manager::ICONS,
@@ -85,11 +84,11 @@ class EEB_Fancy_Button_Widget extends Widget_Base {
 
 		$this->end_controls_section();
 
-		// ===== STYLE: Background =====
+		// ===== STYLE: Button =====
 		$this->start_controls_section(
-			'section_style_background',
+			'section_style_button',
 			[
-				'label' => esc_html__( 'Background', 'eweb-buttons' ),
+				'label' => esc_html__( 'Button Style', 'eweb-buttons' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -98,25 +97,14 @@ class EEB_Fancy_Button_Widget extends Widget_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name'     => 'button_background',
-				'label'    => esc_html__( 'Button Background', 'eweb-buttons' ),
+				'label'    => esc_html__( 'Background', 'eweb-buttons' ),
 				'types'    => [ 'classic', 'gradient' ],
 				'selector' => '{{WRAPPER}} .cssbuttons-io-button',
 			]
 		);
 
-		$this->end_controls_section();
-
-		// ===== STYLE: Text & Icon =====
-		$this->start_controls_section(
-			'section_style_typography',
-			[
-				'label' => esc_html__( 'Text & Icon', 'eweb-buttons' ),
-				'tab'   => Controls_Manager::TAB_STYLE,
-			]
-		);
-
 		$this->add_control(
-			'text_color',
+			'button_text_color',
 			[
 				'label'     => esc_html__( 'Text Color', 'eweb-buttons' ),
 				'type'      => Controls_Manager::COLOR,
@@ -125,10 +113,18 @@ class EEB_Fancy_Button_Widget extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'button_typography',
+				'selector' => '{{WRAPPER}} .cssbuttons-io-button',
+			]
+		);
+
 		$this->add_control(
 			'icon_bg_color',
 			[
-				'label'     => esc_html__( 'Icon Bubble Background', 'eweb-buttons' ),
+				'label'     => esc_html__( 'Icon Background Color', 'eweb-buttons' ),
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '#FFFFFF',
 				'selectors' => [ '{{WRAPPER}} .cssbuttons-io-button .icon' => 'background-color: {{VALUE}};' ],
@@ -136,20 +132,12 @@ class EEB_Fancy_Button_Widget extends Widget_Base {
 		);
 
 		$this->add_control(
-			'icon_svg_color',
+			'icon_color',
 			[
-				'label'     => esc_html__( 'Icon SVG Color', 'eweb-buttons' ),
+				'label'     => esc_html__( 'Icon Color', 'eweb-buttons' ),
 				'type'      => Controls_Manager::COLOR,
-				'default'   => '#B721FF',
-				'selectors' => [ '{{WRAPPER}} .cssbuttons-io-button .icon svg' => 'color: {{VALUE}}; fill: {{VALUE}};' ],
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'     => 'typography',
-				'selector' => '{{WRAPPER}} .cssbuttons-io-button',
+				'default'   => '#d87d62',
+				'selectors' => [ '{{WRAPPER}} .cssbuttons-io-button .icon svg' => 'fill: {{VALUE}};' ],
 			]
 		);
 
@@ -158,35 +146,25 @@ class EEB_Fancy_Button_Widget extends Widget_Base {
 
 	protected function render(): void {
 		$settings = $this->get_settings_for_display();
+
 		$this->add_render_attribute( 'wrapper', 'class', 'cssbuttons-io-button' );
 
-		$bg_mode = $settings['button_background_background'] ?? '';
-
-		if ( empty( $bg_mode ) ) {
-			$this->add_render_attribute( 'wrapper', 'class', 'feb-default-gradient' );
-		} elseif ( 'classic' === $bg_mode ) {
-			$this->add_render_attribute( 'wrapper', 'class', 'feb-bg-classic' );
-		} elseif ( 'gradient' === $bg_mode ) {
-			$this->add_render_attribute( 'wrapper', 'class', 'feb-bg-gradient' );
-		}
-
+		// Soporte nativo para Popups y Enlaces Dinámicos.
 		if ( ! empty( $settings['button_link']['url'] ) ) {
-			$this->add_render_attribute( 'wrapper', 'href', esc_url( $settings['button_link']['url'] ) );
-			if ( ! empty( $settings['button_link']['is_external'] ) ) {
-				$this->add_render_attribute( 'wrapper', 'target', '_blank' );
-			}
-			if ( ! empty( $settings['button_link']['nofollow'] ) ) {
-				$this->add_render_attribute( 'wrapper', 'rel', 'nofollow' );
-			}
+			$this->add_link_attributes( 'wrapper', $settings['button_link'] );
 		} else {
 			$this->add_render_attribute( 'wrapper', 'href', '#' );
 		}
+
+		$this->add_inline_editing_attributes( 'button_text', 'none' );
 		?>
 		<a <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-			<span class="feb-text"><?php echo esc_html( $settings['button_text'] ); ?></span>
-			<span class="icon" aria-hidden="true">
-				<?php Icons_Manager::render_icon( $settings['icon'], [ 'aria-hidden' => 'true' ] ); ?>
+			<span <?php echo $this->get_render_attribute_string( 'button_text' ); ?>>
+				<?php echo esc_html( $settings['button_text'] ); ?>
 			</span>
+			<div class="icon">
+				<?php Icons_Manager::render_icon( $settings['button_icon'], [ 'aria-hidden' => 'true' ] ); ?>
+			</div>
 		</a>
 		<?php
 	}
