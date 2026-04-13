@@ -2,7 +2,7 @@
 /**
  * Plugin Name: EWEB Elementor Buttons
  * Description: High-fidelity collection of premium buttons for Elementor. Includes Project Button, Uiverse Styles, and more.
- * Version: 1.3.4
+ * Version: 1.3.5
  * Author: enlaweb
  * Author URI: https://enlaweb.com
  * Text Domain: eweb-buttons
@@ -11,7 +11,7 @@
  * Requires PHP: 8.1
  *
  * @package EEB
- * @version 1.3.4
+ * @version 1.3.5
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -24,7 +24,7 @@ final class EEB_Plugin {
 	/**
 	 * Plugin version
 	 */
-	public const VERSION = '1.3.4';
+	public const VERSION = '1.3.5';
 
 	private static ?self $instance = null;
 
