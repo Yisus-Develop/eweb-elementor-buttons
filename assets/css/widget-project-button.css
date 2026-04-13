@@ -1,5 +1,5 @@
 /* ==========================================================================
-   EWEB Project Button (Robust Wrapper Style)
+   EWEB Project Button (Dynamic Rotation Style)
    ========================================================================== */
 .eweb-project-button {
   display: inline-flex;
@@ -38,7 +38,7 @@
   flex-shrink: 0;
 }
 
-/* Envoltorio de Iconos: Asegura el centrado y la rotación */
+/* Envoltorio de Iconos: Animación controlada por Elementor */
 .eweb-project-button .icon-wrapper {
   position: absolute;
   inset: 0;
@@ -49,7 +49,6 @@
   transform-origin: center;
 }
 
-/* Forzar que el icono interno (i o svg) herede el tamaño */
 .eweb-project-button .icon-wrapper i,
 .eweb-project-button .icon-wrapper svg {
   display: block !important;
@@ -59,24 +58,19 @@
   fill: currentColor;
 }
 
-/* Estado Normal: Recto visible, Diagonal oculto */
+/* Manejo de opacidades (la rotación la pone Elementor) */
 .eweb-project-button .icon-straight {
   opacity: 1;
-  transform: rotate(0deg);
 }
 
 .eweb-project-button .icon-diagonal {
   opacity: 0;
-  transform: rotate(-180deg);
 }
 
-/* Estado Hover: El recto gira fuera, el diagonal entra girando */
 .eweb-project-button:hover .icon-straight {
   opacity: 0;
-  transform: rotate(180deg);
 }
 
 .eweb-project-button:hover .icon-diagonal {
   opacity: 1;
-  transform: rotate(0deg);
 }

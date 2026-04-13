@@ -3,7 +3,7 @@
  * Project Button Widget
  *
  * @package EEB
- * @version 1.3.3
+ * @version 1.3.6
  */
 
 use Elementor\Widget_Base;
@@ -283,14 +283,64 @@ class EEB_Project_Button_Widget extends Widget_Base {
 			]
 		);
 
-		$this->add_responsive_control(
-			'bubble_margin',
+		$this->add_control(
+			'icon_rotation_heading',
 			[
-				'label'      => esc_html__( 'Margin Left', 'eweb-buttons' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
-				'default'    => [ 'size' => 20 ],
-				'selectors'  => [ '{{WRAPPER}} .icon-circle' => 'margin-left: {{SIZE}}{{UNIT}};' ],
+				'label'     => esc_html__( 'Icon Animation (Rotation)', 'eweb-buttons' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'normal_icon_rotate',
+			[
+				'label'     => esc_html__( 'Normal Icon Start Rotation', 'eweb-buttons' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [ 'min' => -360, 'max' => 360 ],
+				],
+				'default'   => [ 'size' => 0 ],
+				'selectors' => [ '{{WRAPPER}} .icon-straight' => 'transform: rotate({{SIZE}}deg);' ],
+			]
+		);
+
+		$this->add_control(
+			'normal_icon_exit_rotate',
+			[
+				'label'     => esc_html__( 'Normal Icon Exit Rotation', 'eweb-buttons' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [ 'min' => -360, 'max' => 360 ],
+				],
+				'default'   => [ 'size' => 90 ],
+				'selectors' => [ '{{WRAPPER}} .eweb-project-button:hover .icon-straight' => 'transform: rotate({{SIZE}}deg);' ],
+			]
+		);
+
+		$this->add_control(
+			'hover_icon_start_rotate',
+			[
+				'label'     => esc_html__( 'Hover Icon Start Rotation', 'eweb-buttons' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [ 'min' => -360, 'max' => 360 ],
+				],
+				'default'   => [ 'size' => -90 ],
+				'selectors' => [ '{{WRAPPER}} .icon-diagonal' => 'transform: rotate({{SIZE}}deg);' ],
+			]
+		);
+
+		$this->add_control(
+			'hover_icon_end_rotate',
+			[
+				'label'     => esc_html__( 'Hover Icon End Rotation', 'eweb-buttons' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [ 'min' => -360, 'max' => 360 ],
+				],
+				'default'   => [ 'size' => 0 ],
+				'selectors' => [ '{{WRAPPER}} .eweb-project-button:hover .icon-diagonal' => 'transform: rotate({{SIZE}}deg);' ],
 			]
 		);
 
