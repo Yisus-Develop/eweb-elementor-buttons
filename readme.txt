@@ -4,7 +4,7 @@ Tags: elementor, button, uiverse, custom-widget, gradient-button, project-button
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 8.1
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ This plugin adds a premium collection of button widgets to Elementor. Featuring 
 
 == Changelog ==
 
-= 1.3.7 =
+= 1.3.8 =
 * Docs: Fixed README branding and naming consistency.
 * Feat: Added EWEB Project Button with literal high-fidelity animation.
 

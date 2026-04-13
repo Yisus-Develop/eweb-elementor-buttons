@@ -3,7 +3,7 @@
  * Project Button Widget
  *
  * @package EEB
- * @version 1.3.7
+ * @version 1.3.8
  */
 
 use Elementor\Widget_Base;
@@ -202,20 +202,6 @@ class EEB_Project_Button_Widget extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'button_border_radius',
-			[
-				'label'      => esc_html__( 'Border Radius', 'eweb-buttons' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
-				'default'    => [
-					'unit' => 'px',
-					'size' => 50,
-				],
-				'selectors'  => [ '{{WRAPPER}} .eweb-project-button' => 'border-radius: {{SIZE}}{{UNIT}};' ],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
@@ -261,61 +247,54 @@ class EEB_Project_Button_Widget extends Widget_Base {
 				'label'      => esc_html__( 'Bubble Size', 'eweb-buttons' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
-				'range'      => [
-					'px' => [ 'min' => 20, 'max' => 100 ],
-				],
+				'range'      => [ 'px' => [ 'min' => 20, 'max' => 100 ] ],
 				'default'    => [ 'size' => 44 ],
 				'selectors'  => [ '{{WRAPPER}} .icon-circle' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};' ],
-			]
-		);
-
-		$this->add_responsive_control(
-			'icon_size',
-			[
-				'label'      => esc_html__( 'Icon Size', 'eweb-buttons' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
-				'range'      => [
-					'px' => [ 'min' => 10, 'max' => 60 ],
-				],
-				'default'    => [ 'size' => 22 ],
-				'selectors'  => [ '{{WRAPPER}} .icon-circle i, {{WRAPPER}} .icon-circle svg' => 'font-size: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};' ],
 			]
 		);
 
 		$this->add_control(
 			'icon_animation_heading',
 			[
-				'label'     => esc_html__( 'Icon Animation (Elite)', 'eweb-buttons' ),
+				'label'     => esc_html__( 'Icon Rotation (Start & End)', 'eweb-buttons' ),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
 		);
 
 		$this->add_control(
-			'animation_spin',
+			'angle_normal',
 			[
-				'label'     => esc_html__( 'Rotation Spin (Degrees)', 'eweb-buttons' ),
+				'label'     => esc_html__( 'Initial Angle (Normal)', 'eweb-buttons' ),
 				'type'      => Controls_Manager::SLIDER,
-				'range'     => [
-					'px' => [ 'min' => 0, 'max' => 360 ],
-				],
-				'default'   => [ 'size' => 90 ],
-				'description' => esc_html__( 'How much the icon spins during transition.', 'eweb-buttons' ),
+				'range'     => [ 'px' => [ 'min' => -360, 'max' => 360 ] ],
+				'default'   => [ 'size' => 0 ],
+				'selectors' => [ '{{WRAPPER}} .icon-straight' => 'transform: rotate({{SIZE}}deg);' ],
 			]
 		);
 
 		$this->add_control(
-			'hover_icon_angle',
+			'angle_hover',
 			[
-				'label'     => esc_html__( 'Hover Icon Final Angle', 'eweb-buttons' ),
+				'label'     => esc_html__( 'Final Angle (Hover)', 'eweb-buttons' ),
 				'type'      => Controls_Manager::SLIDER,
-				'range'     => [
-					'px' => [ 'min' => -360, 'max' => 360 ],
-				],
+				'range'     => [ 'px' => [ 'min' => -360, 'max' => 360 ] ],
 				'default'   => [ 'size' => -45 ],
-				'description' => esc_html__( 'Adjust this to tilt the icon (e.g. -45 for diagonal).', 'eweb-buttons' ),
-				'selectors' => [ '{{WRAPPER}} .eweb-project-button:hover .icon-diagonal' => 'transform: rotate({{SIZE}}deg);' ],
+				'selectors' => [ 
+					'{{WRAPPER}} .eweb-project-button:hover .icon-straight' => 'transform: rotate({{SIZE}}deg);',
+					'{{WRAPPER}} .eweb-project-button:hover .icon-diagonal' => 'transform: rotate({{SIZE}}deg);',
+				],
+			]
+		);
+
+		$this->add_control(
+			'animation_speed',
+			[
+				'label'     => esc_html__( 'Animation Speed (Seconds)', 'eweb-buttons' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [ 'px' => [ 'min' => 0.1, 'max' => 2, 'step' => 0.1 ] ],
+				'default'   => [ 'size' => 0.6 ],
+				'selectors' => [ '{{WRAPPER}} .icon-wrapper' => 'transition-duration: {{SIZE}}s;' ],
 			]
 		);
 
@@ -326,19 +305,11 @@ class EEB_Project_Button_Widget extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 		$this->add_render_attribute( 'button', 'class', 'eweb-project-button' );
 
-		// Calcular el ángulo de entrada del icono de hover basado en el spin.
-		// Si el ángulo final es -45 y el spin es 90, empieza en -135.
-		$spin = $settings['animation_spin']['size'] ?? 90;
-		$final_angle = $settings['hover_icon_angle']['size'] ?? -45;
-		$start_angle_hover = $final_angle - $spin;
-		$exit_angle_normal = $spin;
-
-		$this->add_inline_editing_attributes( 'button_text', 'none' );
+		// El ángulo inicial del icono diagonal debe ser el ángulo normal para que gire HACIA el de hover.
+		$start_angle = $settings['angle_normal']['size'] ?? 0;
 		?>
 		<style>
-			{{WRAPPER}} .icon-straight { transform: rotate(0deg); }
-			{{WRAPPER}} .eweb-project-button:hover .icon-straight { transform: rotate(<?php echo esc_attr( $exit_angle_normal ); ?>deg); }
-			{{WRAPPER}} .icon-diagonal { transform: rotate(<?php echo esc_attr( $start_angle_hover ); ?>deg); }
+			{{WRAPPER}} .icon-diagonal { transform: rotate(<?php echo esc_attr( $start_angle ); ?>deg); }
 		</style>
 
 		<a <?php echo $this->get_render_attribute_string( 'button' ); ?>>
