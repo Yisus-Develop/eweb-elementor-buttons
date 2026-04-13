@@ -2,7 +2,7 @@
 /**
  * Plugin Name: EWEB Elementor Buttons
  * Description: High-fidelity collection of premium buttons for Elementor. Includes Project Button, Uiverse Styles, and more.
- * Version: 1.3.8
+ * Version: 1.3.9
  * Author: enlaweb
  * Author URI: https://enlaweb.com
  * Text Domain: eweb-buttons
@@ -11,7 +11,7 @@
  * Requires PHP: 8.1
  *
  * @package EEB
- * @version 1.3.8
+ * @version 1.3.9
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -24,7 +24,7 @@ final class EEB_Plugin {
 	/**
 	 * Plugin version
 	 */
-	public const VERSION = '1.3.8';
+	public const VERSION = '1.3.9';
 
 	private static ?self $instance = null;
 
@@ -49,7 +49,11 @@ final class EEB_Plugin {
 	private function init_hooks(): void {
 		add_action( 'plugins_loaded', [ $this, 'load_textdomain' ] );
 		add_action( 'plugins_loaded', [ $this, 'init_updater' ] );
+		
+		// Registro de Widgets y Categorías.
+		add_action( 'elementor/elements/categories_registered', [ $this, 'register_categories' ] );
 		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
+		
 		add_action( 'admin_init', [ $this, 'check_elementor_dependency' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'register_assets' ] );
 	}
@@ -63,6 +67,19 @@ final class EEB_Plugin {
 
 	public function load_textdomain(): void {
 		load_plugin_textdomain( 'eweb-buttons', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	}
+
+	/**
+	 * Register Custom Category "EWEB"
+	 */
+	public function register_categories( $elements_manager ): void {
+		$elements_manager->add_category(
+			'eweb-agency',
+			[
+				'title' => esc_html__( 'EWEB Agency', 'eweb-buttons' ),
+				'icon'  => 'fa fa-plug',
+			]
+		);
 	}
 
 	public function register_widgets( $widgets_manager ): void {

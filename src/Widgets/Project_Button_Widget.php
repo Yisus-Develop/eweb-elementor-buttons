@@ -33,7 +33,7 @@ class EEB_Project_Button_Widget extends Widget_Base {
 	}
 
 	public function get_categories(): array {
-		return [ 'general' ];
+		return [ 'eweb-agency' ];
 	}
 
 	public function get_style_depends(): array {
