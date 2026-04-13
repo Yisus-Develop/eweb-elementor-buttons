@@ -56,6 +56,11 @@ if ( ! class_exists( 'EWEB_GitHub_Updater' ) ) {
 				return $transient;
 			}
 
+			// Force check if debugging.
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				delete_site_transient( 'update_plugins' );
+			}
+
 			$github_data = $this->get_github_data();
 			if ( ! $github_data ) {
 				return $transient;
