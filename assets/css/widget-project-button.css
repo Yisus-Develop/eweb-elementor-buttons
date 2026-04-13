@@ -4,7 +4,6 @@
 .eweb-project-button {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between; /* Empuja el icono al final */
   background-color: #d87d62;
   color: #ffffff;
   font-size: 20px;
@@ -17,11 +16,9 @@
   box-shadow: 0 12px 25px rgba(216, 125, 98, 0.4);
   transition: all 0.3s ease;
   line-height: 1;
-  min-width: 200px; /* Asegura un ancho mínimo base */
 }
 
 .eweb-project-button .btn-text {
-  flex: 1; /* Permite que el texto ocupe el espacio y separe el icono */
   white-space: nowrap;
 }
 
@@ -40,7 +37,7 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  margin-left: 15px; /* Distancia mínima de seguridad */
+  /* margin-left controlado por Elementor Slider */
   overflow: hidden;
   flex-shrink: 0;
 }

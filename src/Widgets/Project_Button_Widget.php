@@ -3,7 +3,7 @@
  * Project Button Widget
  *
  * @package EEB
- * @version 1.4.1
+ * @version 1.4.2
  */
 
 use Elementor\Widget_Base;
@@ -253,6 +253,18 @@ class EEB_Project_Button_Widget extends Widget_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'bubble_spacing',
+			[
+				'label'      => esc_html__( 'Spacing between Text & Icon', 'eweb-buttons' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em' ],
+				'range'      => [ 'px' => [ 'min' => 0, 'max' => 100 ] ],
+				'default'    => [ 'size' => 15 ],
+				'selectors'  => [ '{{WRAPPER}} .icon-circle' => 'margin-left: {{SIZE}}{{UNIT}};' ],
+			]
+		);
+
 		$this->add_control(
 			'icon_animation_heading',
 			[
@@ -305,14 +317,12 @@ class EEB_Project_Button_Widget extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 		$this->add_render_attribute( 'button', 'class', 'eweb-project-button' );
 
-		// Soporte nativo para Popups y Enlaces Dinámicos.
 		if ( ! empty( $settings['button_link']['url'] ) ) {
 			$this->add_link_attributes( 'button', $settings['button_link'] );
 		} else {
 			$this->add_render_attribute( 'button', 'href', '#' );
 		}
 
-		// Ángulo inicial del icono diagonal.
 		$start_angle = $settings['angle_normal']['size'] ?? 0;
 		?>
 		<style>
