@@ -1,10 +1,10 @@
 /* ==========================================================================
-   EWEB Project Button (Literal Animation Style)
+   EWEB Project Button (Smooth Rotation Style)
    ========================================================================== */
 .eweb-project-button {
   display: inline-flex;
   align-items: center;
-  background-color: #d87d62; /* Default */
+  background-color: #d87d62;
   color: #ffffff;
   font-size: 20px;
   font-weight: 500;
@@ -38,7 +38,7 @@
   flex-shrink: 0;
 }
 
-/* Los iconos deben ser absolutos para el efecto de superposición */
+/* Base de iconos: Centrados y con transición de rotación */
 .eweb-project-button .icon-circle i,
 .eweb-project-button .icon-circle svg {
   position: absolute;
@@ -48,29 +48,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  transform-origin: center;
 }
 
-/* Estado Normal: Icono Recto */
+/* Estado Normal: El icono recto está visible y en 0 grados */
 .eweb-project-button .icon-straight {
   opacity: 1;
-  transform: translate(0, 0);
+  transform: rotate(0deg);
 }
 
-/* Estado Normal: Icono Diagonal (oculto abajo-izquierda) */
+/* Estado Normal: El icono diagonal está oculto y rotado -180 grados */
 .eweb-project-button .icon-diagonal {
   opacity: 0;
-  transform: translate(-15px, 15px);
+  transform: rotate(-180deg);
 }
 
-/* Estado Hover: El recto sale hacia arriba-derecha */
+/* Estado Hover: El recto gira y desaparece */
 .eweb-project-button:hover .icon-straight {
   opacity: 0;
-  transform: translate(15px, -15px);
+  transform: rotate(180deg);
 }
 
-/* Estado Hover: El diagonal entra al centro */
+/* Estado Hover: El diagonal gira hacia su posición original y aparece */
 .eweb-project-button:hover .icon-diagonal {
   opacity: 1;
-  transform: translate(0, 0);
+  transform: rotate(0deg);
 }
