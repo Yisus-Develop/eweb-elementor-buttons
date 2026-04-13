@@ -1,0 +1,76 @@
+/* ==========================================================================
+   EWEB Project Button (Literal Animation Style)
+   ========================================================================== */
+.eweb-project-button {
+  display: inline-flex;
+  align-items: center;
+  background-color: #d87d62; /* Default */
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  border-radius: 50px;
+  padding: 6px 6px 6px 24px;
+  cursor: pointer;
+  box-shadow: 0 12px 25px rgba(216, 125, 98, 0.4);
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.eweb-project-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(216, 125, 98, 0.5);
+}
+
+.eweb-project-button .icon-circle {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  color: #d87d62;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  margin-left: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Los iconos deben ser absolutos para el efecto de superposición */
+.eweb-project-button .icon-circle i,
+.eweb-project-button .icon-circle svg {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Estado Normal: Icono Recto */
+.eweb-project-button .icon-straight {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Estado Normal: Icono Diagonal (oculto abajo-izquierda) */
+.eweb-project-button .icon-diagonal {
+  opacity: 0;
+  transform: translate(-15px, 15px);
+}
+
+/* Estado Hover: El recto sale hacia arriba-derecha */
+.eweb-project-button:hover .icon-straight {
+  opacity: 0;
+  transform: translate(15px, -15px);
+}
+
+/* Estado Hover: El diagonal entra al centro */
+.eweb-project-button:hover .icon-diagonal {
+  opacity: 1;
+  transform: translate(0, 0);
+}
